@@ -1,0 +1,74 @@
+local ScreenGui = Instance.new("ScreenGui")
+local Frame = Instance.new("Frame")
+local UICorner = Instance.new("UICorner")
+local TextLabel = Instance.new("TextLabel")
+local UICorner_2 = Instance.new("UICorner")
+local MadeBy = Instance.new("TextLabel")
+local UICorner_3 = Instance.new("UICorner")
+
+ScreenGui.Parent = game.CoreGui
+
+Frame.Parent = ScreenGui
+Frame.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+Frame.BorderColor3 = Color3.fromRGB(50, 50, 50)
+Frame.Position = UDim2.new(0.0556994826, 0, 0.665454566, 0)
+Frame.Size = UDim2.new(0, 235, 0, 85)
+Frame.Active = true
+Frame.Draggable = true
+
+UICorner.Parent = Frame
+
+TextLabel.Parent = Frame
+TextLabel.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+TextLabel.Position = UDim2.new(0, 0, 0.282352954, 0)
+TextLabel.Size = UDim2.new(0, 234, 0, 61)
+TextLabel.Font = Enum.Font.Gotham
+TextLabel.Text = "Label"
+TextLabel.TextColor3 = Color3.fromRGB(241, 129, 37)
+TextLabel.TextSize = 14.000
+
+UICorner_2.Parent = TextLabel
+
+MadeBy.Name = "MadeBy"
+MadeBy.Parent = Frame
+MadeBy.BackgroundColor3 = Color3.fromRGB(51, 51, 51)
+MadeBy.Size = UDim2.new(0, 234, 0, 31)
+MadeBy.Font = Enum.Font.SourceSans
+MadeBy.Text = "Epic Federal"
+MadeBy.TextColor3 = Color3.fromRGB(255, 255, 255)
+MadeBy.TextSize = 14.000
+
+UICorner_3.Parent = MadeBy
+
+
+local function makeComma(amount)
+    local formatted = amount
+    while true do
+        formatted, k = string.gsub(formatted, "^(-?%d+)(%d%d%d)", '%1,%2')
+        if (k == 0) then
+            break
+        end
+    end
+    return formatted
+end
+
+local function CashCheck()
+    local script = Instance.new('LocalScript', TextLabel)
+    while true do
+        local TheTotalServerCash = 0
+        for i, v in pairs(game:GetService('Workspace'):WaitForChild('Ignored'):WaitForChild('Drop'):GetChildren()) do
+            if v.Name == 'MoneyDrop' then
+                local function CalculateShits(s)
+                    local data = string.match(s, '%d[%d.,]*')
+                    local numdata = string.gsub(data, ",", "")
+                    return tonumber(numdata)
+                end
+                local cal = CalculateShits(v.BillboardGui.TextLabel.Text)
+                TheTotalServerCash = TheTotalServerCash + tonumber(cal)
+            end
+        end
+        TextLabel.Text = makeComma(TheTotalServerCash)
+        wait(1)
+    end
+end
+coroutine.wrap(CashCheck)()
